@@ -1,16 +1,16 @@
 package br.com.caelum.pm73.dao;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.Calendar;
 import java.util.List;
-
 import org.hibernate.Session;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import br.com.caelum.pm73.dominio.Leilao;
 import br.com.caelum.pm73.dominio.Usuario;
+
 
 public class LeilaoDaoTest {
 	
@@ -91,6 +91,20 @@ public class LeilaoDaoTest {
 		assertEquals(0, leiloes.size());
 	}
 	
+	@Test
+	public void deveDeletarUmUsuario() {
+		Usuario usuarioX = new Usuario("Usuario X", "usuarioX@gmail.com.br");
+		
+		usuarioDao.salvar(usuarioX);
+		usuarioDao.deletar(usuarioX);
+		
+		session.flush();
+		session.clear();
+		
+		Usuario usuarioDeletado = usuarioDao.porNomeEEmail("Usuario X", "usuarioX@gmail.com.br");
+		
+		Assert.assertNull(usuarioDeletado);
+	}
 	
 	@After
 	public void close() {
