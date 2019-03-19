@@ -54,10 +54,6 @@ public class LeilaoDaoTest {
 		dataPrimeiroLeilao.add(Calendar.DAY_OF_MONTH, -2);
 		dataSegundoLeilao.add(Calendar.DAY_OF_MONTH, -20);
 		
-		System.out.println(comecoIntervalo);
-		System.out.println(dataPrimeiroLeilao);
-		System.out.println(dataSegundoLeilao);
-		
 		Usuario usuarioX = new Usuario("Usuario X", "usuarioX@gmail.com.br");
 		
 		Leilao primeiroLeilao = new Leilao("PS4", 2500.0, usuarioX, false);
@@ -72,8 +68,29 @@ public class LeilaoDaoTest {
 		
 		List<Leilao> leiloes = leilaoDao.porPeriodo(comecoIntervalo, fimIntervalo);
 		assertEquals(1, leiloes.size());
-		assertEquals("PS2", leiloes.get(0).getNome());
+		assertEquals("PS4", leiloes.get(0).getNome());
 	}
+	
+	@Test
+	public void naoDeveTrazerLeiloesEncerradosNoPeriodo() {
+		Calendar comecoIntervalo = Calendar.getInstance();
+		Calendar fimIntervalo = Calendar.getInstance();
+        Calendar dataPrimeiroLeilao = Calendar.getInstance();
+   
+        comecoIntervalo.add(Calendar.DAY_OF_MONTH, -10);
+        dataPrimeiroLeilao.add(Calendar.DAY_OF_MONTH, -2);	
+        
+        Usuario usuarioX = new Usuario("Usuario X", "usuarioX@gmail.com.br");
+		Leilao primeiroLeilao = new Leilao("PS4", 2500.0, usuarioX, false);
+        
+		usuarioDao.salvar(usuarioX);
+		leilaoDao.salvar(primeiroLeilao);
+		
+		List<Leilao> leiloes = leilaoDao.porPeriodo(comecoIntervalo, fimIntervalo);
+		
+		assertEquals(0, leiloes.size());
+	}
+	
 	
 	@After
 	public void close() {
