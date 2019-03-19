@@ -9,7 +9,7 @@ public class UsuarioDao {
 	private final Session session;
 
 	public UsuarioDao(Session session) {
-		this.session = session;
+		this.session = session;		
 	}
 	
 	public Usuario porId(int id) {
