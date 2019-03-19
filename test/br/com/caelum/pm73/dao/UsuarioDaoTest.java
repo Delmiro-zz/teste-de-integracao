@@ -17,6 +17,8 @@ public class UsuarioDaoTest {
 	public void setUp() {
 		this.session = new CriadorDeSessao().getSession();
 		this.usuarioDao = new UsuarioDao(session);
+		
+		this.session.beginTransaction();
 	}
 	
 	@Test
@@ -40,6 +42,7 @@ public class UsuarioDaoTest {
 	
 	@After
 	public void close() {
+		this.session.beginTransaction().rollback();
 		this.session.close();
 	}
 }
